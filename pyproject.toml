@@ -1,0 +1,101 @@
+[project]
+name = "a2a-travel-agent"
+version = "1.0.0"
+description = "ADK + A2A 통합 여행 추천 에이전트 시스템"
+authors = [
+    {name = "minchae-me", email = "ryunmot@gmail.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+keywords = ["agent", "a2a", "adk", "travel", "recommendation", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    # Google ADK (Agent Development Kit) 관련 의존성
+    "google-adk>=1.0.0",  # Mock으로 대체 가능
+    "google-cloud-aiplatform>=1.45.0",
+    "google-generativeai>=0.5.0",
+    
+    # A2A (Agent2Agent Protocol) 관련 의존성  
+    "a2a-protocol>=1.0.0",  # Mock으로 대체 가능
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.25.0",
+    
+    # 공통 의존성
+    "aiohttp>=3.9.0",
+    "websockets>=11.0",
+    "python-multipart>=0.0.6",
+    
+    # 데이터 처리
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    
+    # 로깅 및 모니터링
+    "structlog>=23.1.0",
+    "rich>=13.0.0",
+    
+    # JSON 및 스키마
+    "jsonschema>=4.19.0",
+    "pyyaml>=6.0",
+    
+    # 날짜 및 시간
+    "python-dateutil>=2.8.0",
+    
+    # 유틸리티
+    "click>=8.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.7.0",
+    "flake8>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/minchae-me/a2a"
+Repository = "https://github.com/minchae-me/a2a"
+Issues = "https://github.com/minchae-me/a2a/issues"
+
+[project.scripts]
+a2a-demo = "main:main"
+a2a-run = "run_demo:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0", 
+    "black>=23.7.0",
+    "flake8>=6.0.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"] 
