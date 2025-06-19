@@ -78,6 +78,14 @@ python adk_agents/travel_agent.py
 
 # A2A 에이전트 테스트 (통신 프로토콜)
 python a2a_agents/travel_agent.py
+
+# MCP + ADK + A2A 통합 테스트 (최신!)
+# 방법 1: 자동 통합 실행 (권장)
+python run_with_mcp.py
+
+# 방법 2: 수동 실행
+# 터미널 1: cd ../mcp && python standalone_mcp_server.py
+# 터미널 2: python mcp_integration.py
 ```
 
 ## 🎯 핵심 차이점 실증
@@ -182,9 +190,10 @@ class TravelAgentOrchestrator:
 3. **통합 결과**: `ADK_internal_logic + A2A_communication_wrapper`
 
 ### 🔄 **상호 보완 관계**
+- **MCP**: "외부 도구와 어떻게 연결할 것인가?" (How to Connect Tools)
 - **ADK**: "에이전트를 어떻게 만들 것인가?" (How to Build)
-- **A2A**: "에이전트들을 어떻게 연결할 것인가?" (How to Connect)
-- **결과**: 내부는 탄탄하고 외부는 호환되는 에이전트 생태계
+- **A2A**: "에이전트들을 어떻게 연결할 것인가?" (How to Connect Agents)
+- **결과**: MCP 도구 + ADK 로직 + A2A 통신 = 완전한 에이전트 생태계
 
 ## 🛠️ 고급 기능
 
