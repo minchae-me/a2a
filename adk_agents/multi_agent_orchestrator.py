@@ -9,6 +9,14 @@ import asyncio
 import uuid
 from datetime import datetime
 from enum import Enum
+import sys
+import os
+
+# 현재 파일의 부모 디렉토리를 path에 추가
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 # Google ADK 임포트 (실제 설치 후 사용)
 try:
@@ -107,7 +115,20 @@ except ImportError:
             return self.data.get(key)
 
 
-from ..adk_config import adk_config, AGENT_ROLES, A2A_PROTOCOL_CONFIG
+try:
+    from adk_config import adk_config, AGENT_ROLES, A2A_PROTOCOL_CONFIG
+except ImportError:
+    # 개발 중 Mock 설정
+    class MockConfig:
+        max_agents = 10
+        agent_timeout = 30
+        a2a_host = "localhost"
+        a2a_port = 8080
+        a2a_enabled = True
+
+    adk_config = MockConfig()
+    AGENT_ROLES = {}
+    A2A_PROTOCOL_CONFIG = {}
 
 
 class AgentRole(Enum):
@@ -168,9 +189,14 @@ class TravelMultiAgentOrchestrator:
         """에이전트들 설정 및 등록"""
 
         # 1. 여행지 추천 에이전트
-        from .travel_agent import create_travel_agent
+        try:
+            from adk_agents.travel_agent import create_travel_agent
 
-        travel_agent = create_travel_agent()
+            travel_agent = create_travel_agent()
+        except ImportError:
+            # Mock travel agent
+            travel_agent = LlmAgent(name="여행 추천 에이전트", model="gemini-1.5-pro")
+            travel_agent.role = AgentRole.TRAVEL_RECOMMENDATION
         self.agent_registry.register(travel_agent)
         self.multi_agent_system.add_agent(travel_agent)
 
